@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style type="text/css">
+	h3{
+		color: red;
+	}
+</style>
+<script type="text/javascript">
+	function check(){
+		if(aw.pass.value == ""){
+			alert("パスワードが空白！");
+			aw.pass.focus();
+			return false;
+		}
+		return true;
+	}
+</script>
+<body>
+	<div align="center">
+		<c:if test="${error != null} " >
+			<h3>${error}</h3>
+		</c:if>
+		<form action="adopt_delete.anires" method="post" name="aw" onsubmit="return check()">
+			<input type="hidden" name="ani_no" value="${ani_no}">
+			パスワード : &nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="password" name="pass">&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="OK">
+		</form>
+	</div>
+</body>
+</html>

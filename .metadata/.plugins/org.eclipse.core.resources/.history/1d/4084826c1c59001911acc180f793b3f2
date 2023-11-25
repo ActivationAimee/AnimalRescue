@@ -1,0 +1,41 @@
+package action;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.Hospital;
+import vo.HospitalDAO;
+
+public class HospitalSerchAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+			String select = request.getParameter("col");
+			String text = request.getParameter("search");
+			HospitalDAO dao = new HospitalDAO();
+			ArrayList<Hospital> hpList = new ArrayList<Hospital>();
+			
+			if(select.equals("area")) {
+				if(text.equals("")) {
+					hpList = dao.selectAllHospital();
+				}else{
+					hpList = dao.selectHospitalArea(text);
+				}
+			}else if(select.equals("name")){
+				if(text.equals("")) {
+					hpList = dao.selectAllHospital();
+				}else {
+					hpList = dao.selectHospitalName(text);
+				}
+			}
+			
+			request.setAttribute("hpList", hpList);
+			ActionForward af = new ActionForward("Hospital/hospitalBoard.jsp", false);
+		
+			return af;
+	}
+
+}

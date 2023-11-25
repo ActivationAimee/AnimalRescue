@@ -1,0 +1,72 @@
+package action;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.AnimalSearch;
+import vo.AnimalSearchDAO;
+
+public class SearchSearchAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		AnimalSearchDAO dao = new AnimalSearchDAO();
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH)+1;
+		int day = c.get(Calendar.DATE);
+		String today = year+"-"+month+"-"+day;
+		ArrayList<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		String s = request.getParameter("s_date");
+		String e = request.getParameter("e_date");
+		Date sdate = null;
+		Date edate = null;
+		
+		if(s.length()!=0&&e.length()!=0) {
+			sdate = java.sql.Date.valueOf(s);
+			edate = java.sql.Date.valueOf(e);
+		}else if(s.length()!=0&&e==null) {
+			e = today;
+		}
+		String area = request.getParameter("area");
+		System.out.println(area);
+		String kind = request.getParameter("kind");
+		System.out.println(kind);
+		int attri = Integer.parseInt(request.getParameter("attribute"));
+		System.out.println(attri);
+		
+		if(sdate==null&&edate==null&&area.length()==0&&kind.length()==0){
+			list = dao.listSearch(attri);
+		}else if(sdate==null&&edate==null&&area.length()==0) {
+			list = dao.selectKind(kind,attri);
+		}else if(sdate==null&&edate==null&&kind.length()==0) {
+			list = dao.selectArea(area,attri);
+		}else if(area.length()==0&&kind.length()==0) {
+			list = dao.selectPeriod(sdate, edate,attri);
+		}else if(sdate==null&&edate==null) {
+			list = dao.selectAreaKind(area, kind,attri);
+		}else if(area.length()==0) {
+			list = dao.selectPeriKind(sdate, edate, kind,attri);
+		}else if(kind.length()==0) {
+			list = dao.selectPeriArea(sdate, edate, area,attri);
+		}else {
+			list = dao.selectAll(sdate, edate, area, kind,attri);
+		}
+		
+		if(list.size()==0) {
+			list=null;
+		}
+		
+		request.setAttribute("SearchList", list);
+		ActionForward af = new ActionForward("search/animalSearch.jsp", false);
+		return af;
+	}
+
+}

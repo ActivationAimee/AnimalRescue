@@ -1,0 +1,24 @@
+package action;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.AnimalDAO;
+import vo.Animal_adopt;
+
+public class Animal_adoptList implements Action {
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		AnimalDAO dao = new AnimalDAO();
+		List<Animal_adopt> list = dao.animal_adoptList();
+		
+		request.setAttribute("s_list", list);
+		String url = "/adopt/adopt_list.jsp";
+		
+		ActionForward af = new ActionForward(url, false);
+		return af;
+	}
+}

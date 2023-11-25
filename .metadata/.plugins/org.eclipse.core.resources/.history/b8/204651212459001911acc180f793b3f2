@@ -1,0 +1,31 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<% 
+	request.setCharacterEncoding("utf-8");
+	String name = request.getParameter("name"); 
+	String area = request.getParameter("area");
+	String adress = request.getParameter("adress");
+	String open = request.getParameter("open");
+	String tel = request.getParameter("tel");
+	String content = request.getParameter("content");
+	String maplat = request.getParameter("maplat");
+	String maplng = request.getParameter("maplng");
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+이름 : <%=name %>
+지역 : <%=area %>
+주소 : <%=adress %>
+오픈시간 : <%=open %>
+전화 : <%=tel %>
+내용 : <%=content %>
+lat : <%=maplat %>
+lng : <%=maplng %>
+</body>
+</html>

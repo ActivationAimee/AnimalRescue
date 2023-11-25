@@ -1,0 +1,252 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<style type="text/css">
+.tab {
+	float: left;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+	width: 25%;
+	height: 300px;
+}
+
+.mid_content {
+	width: 74.5%;
+	float: left;
+	margin-left: 5px;
+}
+
+.top_content {
+	padding: 18px;
+	background-color: skyblue;
+	text-align: center;
+	margin-bottom: 3px;
+}
+
+.tab button {
+	display: block;
+	background-color: inherit;
+	color: black;
+	padding: 22px 16px;
+	width: 100%;
+	border: none;
+	outline: none;
+	text-align: left;
+	cursor: pointer;
+	font-size: 17px;
+}
+
+.tab button:hover {
+	background-color: #ddd;
+}
+
+.tab button.active {
+	background-color: #ccc;
+}
+
+table.type01 {
+	border-collapse: separate;
+	border-spacing: 1px;
+	text-align: center;
+	line-height: 1.5;
+	border-top: 1px solid #ccc;
+	margin: 20px 10px;
+}
+
+td.style1 {
+	width: 150px;
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+	background: #efefef;
+}
+
+td.style2 {
+	width: 350px;
+	vertical-align: top;
+	border: 1px solid #ccc;
+}
+
+#listbutton {
+	display: block;
+	background-color: inherit;
+	color: black;
+	padding: 15px 10px;
+	border: none;
+	outline: none;
+	text-align: left;
+	cursor: pointer;
+	font-size: 14px;
+}
+</style>
+<script type="text/javascript">
+	function checkForm() {
+		if (aw.ani_subject.value == "") {
+			alert("タイトルが空白");
+			aw.ani_subject.focus();
+			return false;
+		}
+		if (aw.ani_name.value == "") {
+			alert("お名前が空白");
+			aw.ani_name.focus();
+			return false;
+		}
+		if (aw.ani_tel.value == "") {
+			alert("連絡先が空白");
+			aw.ani_tel.focus();
+			return false;
+		}
+		if (aw.ani_date.value == "") {
+			alert("動物と出会う日が空白");
+			aw.ani_date.focus();
+			return false;
+		}
+		if (aw.ani_content.value == "") {
+			alert("内容が空白");
+			aw.ani_content.focus();
+			return false;
+		}
+		
+		
+		// 휴대폰 유효성 검사
+		var phone = aw.ani_tel.value;
+		var chk = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+		if (chk1.test(date) == false || chk2.test(date) == false) { 
+			alert("2019-01-01の形式や2019-1-1ような形式に入力してください");
+		    aw.ani_date.value = "";
+		    aw.ani_date.focus();
+		    return false;
+		}
+	    // 날짜 유효성 검사
+	    var strValue = aw.ani_date.value;
+	    var chk1 = /^(19|20)\d{2}-([1-9]|1[012])-([1-9]|[12][0-9]|3[01])$/;
+
+	    if (chk1.test(strValue) == false) { 
+	       alert("2019-1-1ような形式に入力してください");
+	       aw.ani_date.value = "";
+	       aw.ani_date.focus();
+	       return false;
+	    }
+
+	    // 존재하는 날자(유효한 날자) 인지 체크
+	    var bDateCheck = true;
+	    var arrDate = aw.ani_date.value.split("-");
+	    var nYear = Number(arrDate[0]);
+	    var nMonth = Number(arrDate[1]);
+	    var nDay = Number(arrDate[2]);
+
+	    if (nMonth < 1 || nMonth > 12) { // 사용가능 하지 않은 달 체크
+	    	alert("存在しない日です。もう一度確認してください。");
+	        return false;
+	    }
+
+	    // 해당달의 마지막 일자 구하기
+	    var nMaxDay = new Date(new Date(nYear, nMonth, 1) - 86400000).getDate();
+	    if (nDay < 1 || nDay > nMaxDay) { // 사용가능 하지 않은 날자 체크
+	    	alert("存在しない日です。もう一度確認してください。");
+	        return false;
+	    }
+		return true;
+	}	
+</script>
+</head>
+<body>
+	<c:if test="${error != null}">
+		${error}
+	</c:if>
+	<div align="center">
+		<h3>保護者募集の修正</h3>
+		<form action="adopt_modify.anires" name="aw" method="post" onsubmit="return checkForm()">
+			<table class="type01">
+				<tr>
+					<td colspan="2">
+						<c:if test="${img == null}">
+							<img src="/animalrescue/img/timo.jpg" name="img" width="400px" height="400px" >
+						</c:if>
+						<c:if test="${img !=null }">
+							<img src="/animalRescue/img/${img}" name="img" width="400px" height="400px">
+						</c:if>
+					<input type="hidden" name="ani_no" value="${aa.ani_no}">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" colspan="2">種類  : 
+							<c:if test="${kind =='kind_dog'}">
+								犬
+							</c:if>
+							<c:if test="${kind =='kind_cat'}">
+								猫
+							</c:if>
+							<c:if test="${kind =='kind_bird'}">
+								鳥類
+							</c:if>
+							<c:if test="${kind =='kind_repamp'}">
+								爬虫類・両生類
+							</c:if>
+							<c:if test="${kind =='kind_small'}">
+								その他
+							</c:if><br>
+					</td>
+				</tr>
+				<tr>
+					<td class="style1">タイトル</td>
+					<td class="style2">
+						<input type="text" name="ani_subject"style="width:170px; height:36px; border:none" maxlength="20" value="${aa.ani_subject}"></td>
+				</tr>
+				<tr>
+					<td class="style1">名前</td>
+					<td class="style2">
+						<input type="text" name="ani_name"  style="width:170px; height:36px; border:none" value="${aa.ani_name}">
+					</td>
+				</tr>
+				<tr>
+					<td class="style1">携帯番号</td>
+					<td class="style2">
+						<input type="text" name="ani_tel" maxlength="13" style="width:170px; height:36px; border:none" value="${aa.ani_tel}">
+					</td>
+				</tr>
+				<tr>
+					<td class="style1">パスワード</td>
+					<td class="style2">
+						<input type="text" name="ani_pass" style="width:170px; height:36px; border:none" value="${aa.ani_pass}">
+					</td>
+				</tr>
+				<tr>
+					<td class="style1">動物と出会う日
+					</td>
+					<td class="style2">
+						<input type="text" name="ani_date"  maxlength="10" style="width:170px; height:36px; border:none" value="${aa.ani_date}">
+					</td>
+				</tr>
+				<tr>
+					<td class="style1"><br>內 容<br> (欲しい理由 などを<br> 書いてください。<br>
+						２００文字 以内)
+					</td>
+					<td colspan="2" class="style2">
+						<textarea rows="10" cols="65" name="ani_content" style="width:520px; height:150px; border:none">${aa.ani_content}</textarea>
+					</td>
+				</tr>
+			</table>
+			<table>
+        		<tr height="30">
+					<td width = "650" align="right">
+						<input type="submit" value="修正" id="listbutton">
+         	       </td>
+         	       <td width = "80" align="right">
+         		       	<input type="button" value="取り消し"onclick="self.close()" id="listbutton">
+        	        </td>
+         	   </tr>
+       		</table>
+		</form>
+	</div>
+</body>
+</html>

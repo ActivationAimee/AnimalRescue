@@ -1,0 +1,35 @@
+package action;
+
+import java.sql.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.AnimalSearch;
+import vo.AnimalSearchDAO;
+
+public class SearchModifyAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		AnimalSearchDAO dao = new AnimalSearchDAO();
+		int no = Integer.parseInt(request.getParameter("ani_no"));
+		String subject = request.getParameter("ani_subject");
+		String content =request.getParameter("ani_area");
+		String area = request.getParameter("ani_area");
+		Date date = Date.valueOf(request.getParameter("ani_date"));
+		String kind = request.getParameter("ani_kind");
+		String image = request.getParameter("ani_image");
+		String name = request.getParameter("ani_name");
+		String tel = request.getParameter("ani_tel");
+		int attribute = Integer.parseInt("ani_attribute");
+		int now = Integer.parseInt("ani_now");
+		AnimalSearch as = new AnimalSearch(no,subject,content,area,date,kind,image,name,tel,attribute,now);
+		dao.insertSearch(as);
+		
+		ActionForward af = new ActionForward("/search/aniView.jsp",false);
+		return af;
+	}
+
+}

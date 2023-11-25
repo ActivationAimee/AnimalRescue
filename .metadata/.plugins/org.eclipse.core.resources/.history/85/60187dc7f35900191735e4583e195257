@@ -1,0 +1,133 @@
+package vo;
+
+import java.sql.Date;
+
+public class AnimalSearch {
+	private int ani_no;
+	private String ani_subject;
+	private String ani_content;
+	private String ani_area;
+	private Date ani_date;
+	private String ani_kind;
+	private String ani_image;
+	private String ani_name;
+	private String ani_tel;
+	private int ani_attribute;
+	private int ani_now;
+	
+	public AnimalSearch() {}
+
+	public AnimalSearch(int ani_no, String ani_subject, String ani_content, String ani_area, Date ani_date,
+			String ani_kind, String ani_image, String ani_name, String ani_tel, int ani_attribute, int ani_now) {
+		super();
+		this.ani_no = ani_no;
+		this.ani_subject = ani_subject;
+		this.ani_content = ani_content;
+		this.ani_area = ani_area;
+		this.ani_date = ani_date;
+		this.ani_kind = ani_kind;
+		this.ani_image = ani_image;
+		this.ani_name = ani_name;
+		this.ani_tel = ani_tel;
+		this.ani_attribute = ani_attribute;
+		this.ani_now = ani_now;
+	}
+
+	public int getAni_no() {
+		return ani_no;
+	}
+
+	public void setAni_no(int ani_no) {
+		this.ani_no = ani_no;
+	}
+
+	public String getAni_subject() {
+		return ani_subject;
+	}
+
+	public void setAni_subject(String ani_subject) {
+		this.ani_subject = ani_subject;
+	}
+
+	public String getAni_content() {
+		return ani_content;
+	}
+
+	public void setAni_content(String ani_content) {
+		this.ani_content = ani_content;
+	}
+
+	public String getAni_area() {
+		return ani_area;
+	}
+
+	public void setAni_area(String ani_area) {
+		this.ani_area = ani_area;
+	}
+
+	public Date getAni_date() {
+		return ani_date;
+	}
+
+	public void setAni_date(Date ani_date) {
+		this.ani_date = ani_date;
+	}
+
+	public String getAni_kind() {
+		return ani_kind;
+	}
+
+	public void setAni_kind(String ani_kind) {
+		this.ani_kind = ani_kind;
+	}
+
+	public String getAni_image() {
+		return ani_image;
+	}
+
+	public void setAni_image(String ani_image) {
+		this.ani_image = ani_image;
+	}
+
+	public String getAni_name() {
+		return ani_name;
+	}
+
+	public void setAni_name(String ani_name) {
+		this.ani_name = ani_name;
+	}
+
+	public String getAni_tel() {
+		return ani_tel;
+	}
+
+	public void setAni_tel(String ani_tel) {
+		this.ani_tel = ani_tel;
+	}
+
+	public int getAni_attribute() {
+		return ani_attribute;
+	}
+
+	public void setAni_attribute(int ani_attribute) {
+		this.ani_attribute = ani_attribute;
+	}
+
+	public int getAni_now() {
+		return ani_now;
+	}
+
+	public void setAni_now(int ani_now) {
+		this.ani_now = ani_now;
+	}
+
+	@Override
+	public String toString() {
+		return "AnimalSearch [ani_no=" + ani_no + ", ani_subject=" + ani_subject + ", ani_content=" + ani_content
+				+ ", ani_area=" + ani_area + ", ani_date=" + ani_date + ", ani_kind=" + ani_kind + ", ani_image="
+				+ ani_image + ", ani_name=" + ani_name + ", ani_tel=" + ani_tel + ", ani_attribute=" + ani_attribute
+				+ ", ani_now=" + ani_now + "]";
+	}
+	
+	
+}

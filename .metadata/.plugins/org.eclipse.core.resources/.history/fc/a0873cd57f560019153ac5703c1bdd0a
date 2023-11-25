@@ -1,0 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Insert title here</title>
+		<link href="css/common.css" rel="stylesheet">
+		<link href="css/noso.css" rel="stylesheet">
+		<link href="css/jquery.bxslider.css" rel="stylesheet">
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/jquery.bxslider.js"></script>
+		<script src="js/script.js"></script>
+		
+	</head>
+	<body>
+	<div class="header">
+			<header>
+				<h1 class="logo"><a href="../view/mainForm.jsp">AnimalRescue</h1>
+				<nav id="nav">
+					<ul class="depth1">
+						<li class="on"><a href="/aSearchList.anires">유기동물제보</a>
+							<ul class="depth2">
+								<li><a href="/aSearchList.anires">제보게시판</a></li>
+								<li><a href="/hSearchList.anires">공고중</a></li>
+								<li><a href="#"></a></li>
+							</ul>
+						</li>
+						<li><a href="#">유기동물 입양</a>
+							<ul class="depth2">
+								<li><a href="#">입양게시판</a></li>
+								<li><a href="#">입양 절차</a></li>
+							</ul>
+						</li>
+						<li><a href="#">보호 캠페인</a>
+							<ul class="depth2">
+								<li><a href="#">지역별병원</a></li>
+								<li><a href="#">병원 검색</a></li>
+								<li><a href="#">후원</a></li>
+								<li><a href="#">보호 센터</a></li>
+							</ul>
+						</li>
+						<li><a href="#">커뮤니티</a>
+							<ul class="depth2">
+								<li><a href="#">TIP</a></li>
+								<li><a href="#">Q&A</a></li>
+								<li><a href="#">자주하는 질문</a></li>
+								<li><a href="#">자료실</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</header>
+		</div>
+	</body>
+</html>

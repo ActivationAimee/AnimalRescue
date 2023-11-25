@@ -1,0 +1,31 @@
+package action;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.Support;
+import vo.SupportDAO;
+
+public class SupportModifySuccessAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		SupportDAO dao = new SupportDAO();
+		Support sp = new Support();
+		
+		sp.setSnum(Integer.parseInt(request.getParameter("snum")));
+		sp.setId(request.getParameter("id"));
+		sp.setName(request.getParameter("name"));
+		sp.setSubject(request.getParameter("subject"));
+		sp.setContent(request.getParameter("content"));
+		sp.setAccount(request.getParameter("account"));
+		sp.setMoney(Integer.parseInt(request.getParameter("money")));
+		sp.setImage(request.getParameter("image"));
+		sp.setPhone(request.getParameter("phone"));
+		
+		dao.SupportUpdate(sp);
+		
+		ActionForward af = new ActionForward("support/supportboard.jsp", false);
+		return af;
+	}
+}

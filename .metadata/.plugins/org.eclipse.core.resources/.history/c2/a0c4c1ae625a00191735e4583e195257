@@ -1,0 +1,66 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<link rel="stylesheet" href="/animalRescue/css/adopt.css">
+<script type="text/javascript" src="script/script.js">
+</script>
+<body>
+	<div>
+		<jsp:include page="../main/mainHeader.jsp" />
+	</div>
+	<div>
+		<form action="adopt_list.anires" method="post">
+			<table border="2" align="center" width="700" bordercolor="green"
+				cellspacing="1">
+				<tr>
+					<th>番号</th>
+					<th>タイトル</th>
+					<th>作成者</th>
+					<th>登録日</th>
+				</tr>
+				<c:if test="${s_list != null}">
+					<c:forEach var="aa" items="${s_list}" varStatus = "status">
+						<tr>
+							<td align="center">
+								${aa.ani_no}
+							</td>
+							<td align="center">
+								<a href="javascript:void(window.open('adopt_select.anires?ani_no=${aa.ani_no}','${aa.ani_subject}'))">
+									${aa.ani_subject}
+								</a>
+							</td>
+							<td align="center">
+								${aa.ani_name}
+							</td>
+							<td align="center">
+								${aa.ani_dday}
+							</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				<c:if test="${s_list == null}">
+					<tr>
+						<td colspan="4" align="center"><label>登録した文書がないです。</label></td>
+					</tr>
+				</c:if>
+			</table>
+			<c:if test="${page != null }">
+				<div style ="text-aling : 'center'">
+					<c:forEach items = "${page}" var = "pagenum" varStatus="status">
+						<a href ="list.hp?page=${status.index+1 }">${status.index+1 }</a>&nbsp;
+					</c:forEach>
+				</div>
+			</c:if>
+		</form>
+	</div>
+	<div>
+		<jsp:include page="../main/mainFooter.jsp" />
+	</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+package action;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.AnimalDAO;
+import vo.AnimalSearch;
+import vo.Animal_adopt;
+
+public class Animal_adoptModifyCheck implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		AnimalDAO dao = new AnimalDAO();
+		AnimalSearch as = new AnimalSearch();
+		Animal_adopt aa = new Animal_adopt();
+		ActionForward af = null;
+		
+		String pass = request.getParameter("pass");
+		int ani_no = Integer.parseInt(request.getParameter("ani_no"));
+		
+		
+		if(dao.aa_truefalse(pass)) {
+			aa = dao.adoptSelect(ani_no);
+			as = dao.animal_adoptImg(aa.getAni_w());
+			String img = as.getAni_image();
+			String kind = as.getAni_kind();
+		
+			request.setAttribute("aa", aa);
+			request.setAttribute("img", img);
+			request.setAttribute("kind", kind);
+			request.setAttribute("ani_no", ani_no);
+			af = new ActionForward("adopt/adopt_modifyForm.jsp", false);
+		} else {
+			request.setAttribute("error", "パスワードが間違いました。");
+			request.setAttribute("ani_no", ani_no);
+			af = new ActionForward("adopt/adopt_modifycheck.jsp", false);
+		}
+		
+		return af;
+	}
+}

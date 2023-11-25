@@ -1,0 +1,456 @@
+package vo;
+
+import static utils.JdbcUtils.*;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AnimalSearchDAO {
+	public ArrayList<AnimalSearch> listSearch(int ani_attribute) { //전체목록출력
+		ArrayList<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		AnimalSearch as = null;
+		
+		String sql = "select * from animal_search where ani_attribute=? order by ani_no desc";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ani_attribute);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public AnimalSearch viewSearch(int ani_no) {
+		AnimalSearch as = null;
+		
+		String sql = "select * from animal_search where ani_no=?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ani_no);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return as;
+	}
+	public int getNo() {
+		int bno = 0;
+		String sql = "select max(ani_no) from animal_search";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				bno = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return bno;
+	}
+	public void insertSearch(AnimalSearch as) {
+		int gno = getNo()+1;
+		int res = 0;
+		String sql = "insert into animal_search values(?,?,?,?,?,?,?,?,?,?,0)";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, gno);
+			pstmt.setString(2, as.getAni_subject());
+			pstmt.setString(3, as.getAni_content());
+			pstmt.setString(4, as.getAni_area());
+			pstmt.setDate(5, as.getAni_date());
+			pstmt.setString(6, as.getAni_kind());
+			pstmt.setString(7, as.getAni_image());
+			pstmt.setString(8, as.getAni_name());
+			pstmt.setString(9, as.getAni_tel());
+			pstmt.setInt(10,as.getAni_attribute());
+			res = pstmt.executeUpdate();
+			
+			if(res>0) {
+				commit(conn);
+			}else {
+				rollback(conn);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,null);
+		}
+	}
+	
+	public void updateFind(int ani_no) {
+		String sql = "update animal_search set ani_now = ? where ani_no=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, 1);
+			pstmt.setInt(2, ani_no);
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,null);
+		}
+	}
+	
+	public List<AnimalSearch> selectPeriod(Date sdate,Date edate,int attribute) {
+		AnimalSearch as = null;
+		List<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		
+		String sql = "select * from animal_search where ani_date<=? and ani_date>=? and ani_attribute = ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDate(1, sdate);
+			pstmt.setDate(2, edate);
+			pstmt.setInt(3, attribute);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public ArrayList<AnimalSearch> selectArea(String area,int attribute) {
+		AnimalSearch as = null;
+		ArrayList<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		
+		String sql = "select * from animal_search where ani_area = ? and ani_attribute = ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, area);
+			pstmt.setInt(2, attribute);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public ArrayList<AnimalSearch> selectKind(String kind,int attribute) {
+		AnimalSearch as = null;
+		ArrayList<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		
+		String sql = "select * from animal_search where ani_kind = ? and ani_attribute = ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, kind);
+			pstmt.setInt(2, attribute);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public List<AnimalSearch> selectPeriArea(Date sdate, Date edate, String area,int attribute) {
+		AnimalSearch as = null;
+		List<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		
+		String sql = "select * from animal_search where ani_date<=? and ani_date>=? and ani_area = ? and ani_attribute = ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDate(1, sdate);
+			pstmt.setDate(2, edate);
+			pstmt.setString(3, area);
+			pstmt.setInt(4, attribute);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public List<AnimalSearch> selectPeriKind(Date sdate, Date edate, String kind,int attribute) {
+		AnimalSearch as = null;
+		List<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		
+		String sql = "select * from animal_search where ani_date<=? and ani_date>=? and ani_kind = ? and ani_attribute = ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDate(1, sdate);
+			pstmt.setDate(2, edate);
+			pstmt.setString(3, kind);
+			pstmt.setInt(4, attribute);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public List<AnimalSearch> selectAreaKind(String area,String kind,int attribute) {
+		AnimalSearch as = null;
+		List<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		
+		String sql = "select * from animal_search where ani_area = ? and ani_kind = ? and ani_attribute = ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, area);
+			pstmt.setString(2, kind);
+			pstmt.setInt(3, attribute);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public List<AnimalSearch> selectAll(Date sdate, Date edate, String area, String kind,int attribute) {
+		AnimalSearch as = null;
+		List<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		
+		String sql = "select * from animal_search where ani_date<=? and ani_date>=? "
+				+ "and ani_area = ? and ani_kind = ? and ani_attribute = ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDate(1, sdate);
+			pstmt.setDate(2, edate);
+			pstmt.setString(3, area);
+			pstmt.setString(4, kind);
+			pstmt.setInt(5, attribute);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				as = new AnimalSearch(rs.getInt("ani_no"),
+									rs.getString("ani_subject"),
+									rs.getString("ani_content"),
+									rs.getString("ani_area"),
+									rs.getDate("ani_date"),
+									rs.getString("ani_kind"),
+									rs.getString("ani_image"),
+									rs.getString("ani_name"),
+									rs.getString("ani_tel"),
+									rs.getInt("ani_attribute"),
+									rs.getInt("ani_now"));
+				list.add(as);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		return list;
+	}
+	
+	public void deleteAnimalSearch(int no) {
+		String sql = "delete from animal_search where ani_no=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,null);
+		}
+		
+	}
+}

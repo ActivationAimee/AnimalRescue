@@ -1,0 +1,48 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800');
+<link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
+
+body {font-family : 'Nanum Gothic';'Sawarabi Gothic';  font-weight:400;}
+/*reset css*/
+*{margin:0; padding:0; box-sizing:border-box;}
+
+
+ul,ol{list-style:none;}
+/**/
+a {color:#000; font-size:16px; text-decoration:none;}
+/*
+	:link 맨처음 링크속성
+	:visited 방문
+	:hover 마우스가 위에 올라갔을때
+	:action 클릭
+*/
+a:hover {text-decoration:underline;}
+header, footer, nav, section {display:block;}/*의미가 있는 그룹일때 section*/
+address{font-style:normal;}
+
+input [type="text"],
+input [type="password"],
+input [type="search"],
+input [type="button"],
+select {
+	padding:10px 5px; color:#333; border-radius:1px; 
+	font-size:15px; border:1px solid #ccc;}/*border-radius:둥근모양으로 만드는것*/
+	
+.readonly {width:0; height:0; font-size:0; line-height:0;}/*회원가입표를 안보이게*/
+.txtl {text-align:left;}
+.txtc {text-align:center;}
+.txtr {text-align:right;}
+
+.p10{padding:10px;}
+.p15{padding:15px;}
+.p20{padding:20px;}
+
+.w100 {width:100%;}/*퍼센트는 비율*/
+
+.btn_ok, .btn_reset {border:0 none; width:60px; height:30px; background:#426aaa; color:#fff; text-align:center; cursor:pointer;}
+
+.btn_logok{border:0 none; width:150px; height:60px; background:#426aaa; color:#fff; text-align:center; cursor:pointer;}
+
+.btn_reset{background:#426aaa;}
+
+.line {height:1px; background:#ccc;}

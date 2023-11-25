@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+	function go(){
+		opener.location.href="adopt_list.anires";
+		self.close();
+	}
+</script>
+<body>
+	<div align="center">
+		成功!
+		<input type="button" value="close" onclick="go()">
+	</div>
+</body>
+</html>

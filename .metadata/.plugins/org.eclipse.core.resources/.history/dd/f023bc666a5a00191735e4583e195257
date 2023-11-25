@@ -1,0 +1,168 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="vo.*" %>
+
+<!doctype html>
+<html>
+	<head>
+		<title>Animal Rescue</title><!-- 메인화면, 최초 실행시 로그인 화면으로 이동한다. 로그인 성공시 메인화면이 나타난다. -->
+		<meta charset="utf-8">
+		<link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/css/jquery.bxslider.css" rel="stylesheet">
+		<script src="${pageContext.request.contextPath}/js/jquery-3.3.1.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/jquery.bxslider.js"></script>
+		<script src="${pageContext.request.contextPath}/js/script.js"></script>
+
+		
+		<!-- JQuery ,import -->
+	</head>
+	<script>
+	</script>
+	<body>
+		<div class="hb">
+			<jsp:include page="/main/mainBody.jsp"></jsp:include>
+		</div>
+		
+		<div class="header">
+			<jsp:include page="/main/mainHeader.jsp"></jsp:include>
+		</div>
+		
+		<div class="bxslider">
+			<div><a href="#"><img src="/animalRescue/img/main1.jpg" class="w100"></a></div>
+			<div><a href="#"><img src="/animalRescue/img/main2.jpg" class="w100"></a></div>
+			<div><a href="#"><img src="/animalRescue/img/main3.jpg" class="w100"></a></div>
+		</div>
+
+		
+	<div class="wrap-body">
+			<div class="wrap-list">
+					<ul>
+						<li class="notice-title bgblur">
+							<a href="#">
+								<p class="txt20">うちの子が  <br>
+								消えちゃった！</p>
+								<!-- <p class="txt40">[click!]</p> -->
+								<p class="txt17">公告案内</p>
+							</a>
+						</li>
+						
+						<li class="notice1">
+							<a href="#">
+								<p class="txt20">買わないで<br>里親がなるのは。。</p>
+								<p class="txt17">里親申請案内</p>
+							</a>
+						</li>
+						<li class="notice2">
+							<a href="#">
+								<p class="txt20">我が子が痛くて<br>病気があります。</p>
+								<p class="txt17">病院探し</p>
+							</a>
+						</li>
+						<li class="notice3">
+							<a href="#">
+								<p class="txt20">痛がる<br>動物たち </p>
+								<p class="txt17">サポートへ</p>
+							</a>
+						</li>
+						
+					</ul>
+				</div>
+			
+				</div>
+
+		<!--공지사항 및 다른 게시판들 들어갈 창들-->
+				<div class="board">
+					<ul>
+						<li>
+							<div>
+								<h2 class="anounce">迷子公告案内<a href="intro/intro.html">more</a></h2>
+									<ul>
+										<% 
+											AnimalSearch as = new AnimalSearch();
+											AnimalSearchDAO dao1 = new AnimalSearchDAO();
+											int ani_no1 = dao1.getNo();
+											for(int i=0; i<4;i++){
+												if(ani_no1!=0){
+													as = dao1.viewSearch(ani_no1);
+										%>
+										<li><p>19.03.22</p><a href="animalRescue/searchView.anires?ani_no=<%=ani_no1%>" class="color-sub">
+										<%=as.getAni_subject()%><span class="new">N</span></a></li>
+										<%ani_no1--;}} %>
+										
+									</ul>
+								</div>
+								
+							</li>
+							<li>
+							<div>
+								<h2 class="anounce">里親申請案内<a href="intro/intro.html">more</a></h2>
+									<ul>
+										<% 
+											Animal_adopt aa = new Animal_adopt();
+											AnimalDAO dao2 = new AnimalDAO();
+											int ani_no2 = dao2.Animal_adoptNumber()-1;
+											System.out.print(ani_no2);
+											for(int i=0; i<4;i++){
+												if(ani_no2!=0){
+													aa = dao2.adoptSelect(ani_no2);
+										%>
+										<li><p><%=aa.getAni_date() %></p><a href="../adopt_select.anires?ani_no=<%=ani_no2%>" class="color-sub">
+										<%=aa.getAni_subject().subString(2);%><span class="new">N</span></a></li>
+										<%ani_no2--;}} %>
+									</ul>
+								</div>
+								
+							</li>
+							<li>
+							<div>
+								<h2 class="anounce">保護キャンペン案内<a href="intro/intro.html">more</a></h2>
+									<ul>
+										<% 
+											AnimalSearch as3 = new AnimalSearch();
+											AnimalSearchDAO dao3 = new AnimalSearchDAO();
+											int ani_no3 = dao3.getNo();
+											for(int i=0; i<4;i++){
+												if(ani_no3!=0){
+													as3 = dao3.viewSearch(ani_no3);
+										%>
+										<li><p>19.03.22</p><a href="../searchView.anires?ani_no=<%=ani_no3%>" class="color-sub">
+										<%=as3.getAni_subject()%><span class="new">N</span></a></li>
+										<%ani_no3--;}} %>
+									</ul>
+								</div>
+								
+							</li>
+							<li>
+							<div>
+								<h2 class="anounce">サポート案内<a href="intro/intro.html">more</a></h2>
+									<ul>
+										<% 
+											AnimalSearch as4 = new AnimalSearch();
+											AnimalSearchDAO dao4 = new AnimalSearchDAO();
+											int ani_no4 = dao4.getNo();
+											for(int i=0; i<4;i++){
+												if(ani_no4!=0){
+													as4 = dao4.viewSearch(ani_no4);
+										%>
+										<li><p>19.03.22</p><a href="../searchView.anires?ani_no=<%=ani_no4%>" class="color-sub">
+										<%=as4.getAni_subject()%><span class="new">N</span></a></li>
+										<%ani_no4--;}} %>									</ul>
+								</div>
+								
+							</li>
+						</ul>
+						
+				</div>
+				
+			</div>
+		</div>
+		
+	<!-- 	<div class="w1200"> -->
+			<jsp:include page="/main/mainFooter.jsp"></jsp:include>
+		<!-- </div> -->
+		
+
+	</body>
+</html>

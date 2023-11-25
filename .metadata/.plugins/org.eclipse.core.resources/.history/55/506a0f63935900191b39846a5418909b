@@ -1,0 +1,132 @@
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+<!doctype html>
+<html>
+	<head>
+		<title>Save the animal</title>
+		<meta charset="utf-8">
+		<link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/css/jquery.bxslider.css" rel="stylesheet">
+		<script src="${pageContext.request.contextPath}/js/jquery-3.3.1.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/jquery.bxslider.js"></script>
+		<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	
+	<script type="text/javascript">
+		function checkValue(){
+			var form=document.member;
+			
+			if(form.id.value==""){
+				alert("IDを入力をしてください。");
+				return form.id.focus();
+			}else if(form.pass.value==""){
+				alert("パスワードを入力しでください。");
+				return form.pass.focus();
+			}else if(form.name.value==""){
+				alert("お名前を入力しでください。");
+				return form.name.focus();
+			}else if(form.phone.value==""){
+				alert("電話番号を入力しでください。");
+				return form.phone.focus();
+			}else if(form.age.value==""){
+				alert("歳を入力しでください。");
+				return form.age.focus();
+			}else{
+				alert("会員加入が完了しました。")
+				form.submit();
+			}
+		}
+		
+		function checkId(){
+			var form = document.member;
+			var id1 = document.member.id.value;
+			var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi; 
+			if(form.id.value==""){
+				alert("IDを入力してください。");
+			}else if(special_pattern.test(id1) == true){
+				alert("特殊文字は入力出来ません。")
+			}
+			else{
+				location.href="/saveTheAnimal/idCheck.hp?id="+id1;
+			}
+		}
+	</script>
+	</head>
+	
+	<body>
+		<div class="hb">
+			<jsp:include page="/main/mainBody.jsp"></jsp:include>
+		</div>
+		<div class="header">
+			<jsp:include page="/main/mainHeader.jsp"></jsp:include>
+		</div>
+		
+		<!-- content area-->
+		<div class="contents">
+		<div class="regbox">
+		<form name="member" method="post" action="/animalRescue/insertId.anires">
+			<h2> 会員加入</h2>
+			<table summary="ID、PW、名前이름、電話番号、メールアドレス入力があります。">
+				<caption class="readonly"> 회원가입 표</caption> <!-- 표 제목 -->
+				<colgroup>
+					<col width="20%">
+					<col width="*">
+				</colgroup>
+				<tbody>
+					
+					<tr>
+						<th>ID</th>
+						<td>
+						<input type="text" name="id" class="w80" value="${id}"/>
+						<button type="button" onclick="checkId()" class="btn_conf">重複確認</button>
+						<c:if test="${res == 1}">
+						<script>
+							alert("重複したIDがあります。");
+						</script>
+						</c:if>
+						<c:if test="${res == 0}">
+						<script>
+							alert("사용 가능한 아이디 입니다.");
+						</script>
+						</c:if>
+						</td>
+					</tr>
+					<tr>
+						<th>비밀번호</th>
+						<td><input type="password" name="pass" class="w80"></td>
+					</tr>
+					
+					<tr>
+						<th>이 름</th>
+						<td><input type="text" name="name"></td>
+					</tr>
+					
+					<tr>
+						<th>전화번호</th>
+						<td><input type="text" name="phone" class="w80"></td>
+					</tr>
+					<tr>
+						<th>나이</th>
+						<td><input type="number" name="age" class="w80"></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" class="txtc"/>
+						<input type="button" value="회원가입" class="btn_ok" onclick = "return checkValue()"/>&nbsp;&nbsp;
+						<input type="reset" value="취소"  class="btn_reset"/>&nbsp;&nbsp;
+						<input type="button" value="메인으로" class="btn_ok" onclick="location.href='/animalRescue/main/mainForm.jsp'"/>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		</div>
+		</div>
+		<!--content end -->
+		
+		<div class="w1200">
+			<jsp:include page="/main/mainFooter.jsp"></jsp:include>
+		</div>
+		
+		</body>
+	</html>

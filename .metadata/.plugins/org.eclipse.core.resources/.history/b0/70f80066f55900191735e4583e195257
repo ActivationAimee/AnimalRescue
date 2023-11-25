@@ -1,0 +1,192 @@
+package vo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
+public class MemberDAO {
+	String myDriver="oracle.jdbc.driver.OracleDriver";
+	String myURL="jdbc:oracle:thin:@localhost:1521:orcl";
+	String myID="jsp_31";
+	String myPass="1234";
+	
+	Connection conn=null;
+	PreparedStatement pstmt=null;
+	ResultSet rs=null;
+	
+	public void insertMember(Member dto) {
+		String sql="insert into member values(?,?,?,?,?)";
+		
+		try {
+			conn = DriverManager.getConnection(myURL, myID, myPass);
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getPass());
+			pstmt.setString(3, dto.getName());
+			pstmt.setString(4, dto.getPhone());
+			pstmt.setInt(5, dto.getAge());
+			pstmt.executeUpdate();	
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try{rs.close();}catch(SQLException e){}
+			}
+			if(pstmt!=null) {
+				try{pstmt.close();}catch(SQLException e){}
+			}
+			if(conn!=null) {
+				try{conn.close();}catch(SQLException e){}
+			}
+		}
+	}
+
+	public Member memberLoginCheck(String id, String pass) {
+		String sql="select * from member where id=? and pass=?";
+		Member dto=null;
+	
+		try {
+			conn = DriverManager.getConnection(myURL, myID, myPass);
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pass);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new Member(rs.getString("id"),rs.getString("pass"),rs.getString("name"),rs.getString("phone"),rs.getInt("age"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try{rs.close();}catch(SQLException e){}
+			}
+			if(pstmt!=null) {
+				try{pstmt.close();}catch(SQLException e){}
+			}
+			if(conn!=null) {
+				try{conn.close();}catch(SQLException e){}
+			}
+		}
+		return dto;	
+	}
+	
+	public ArrayList<Member> selectAllMember(){
+		ArrayList<Member> list=new ArrayList<Member>();
+		String sql="select * from product order by code desc";
+		Member dto=null;
+		try {
+			conn = DriverManager.getConnection(myURL, myID, myPass);
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				dto=new Member(rs.getString("id"),rs.getString("pass"),rs.getString("name"),rs.getString("phone"),rs.getInt("age"));
+				list.add(dto);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try{rs.close();}catch(SQLException e){}
+			}
+			if(pstmt!=null) {
+				try{pstmt.close();}catch(SQLException e){}
+			}
+			if(conn!=null) {
+				try{conn.close();}catch(SQLException e){}
+			}
+		}
+		return list;
+	}
+	
+	public int checkId(String id) {
+		String sql="select id from member where id=?";
+		int res = 0;
+		
+		try {
+			conn = DriverManager.getConnection(myURL, myID, myPass);
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				res = 1;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try{rs.close();}catch(SQLException e){}
+			}
+			if(pstmt!=null) {
+				try{pstmt.close();}catch(SQLException e){}
+			}
+			if(conn!=null) {
+				try{conn.close();}catch(SQLException e){}
+			}
+		}
+		return res;
+	}
+	
+	public void updateMember(Member dto) {
+		int res=0;
+		String sql="update member set name=?, pass=?, phone=?, age=? where id = ?";
+		
+		try {
+			conn = DriverManager.getConnection(myURL, myID, myPass);
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getPass());
+			pstmt.setString(3, dto.getPhone());
+			pstmt.setInt(4, dto.getAge());
+			pstmt.setString(5, dto.getId());
+			pstmt.executeUpdate();
+			res=pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try{rs.close();}catch(SQLException e){}
+			}
+			if(pstmt!=null) {
+				try{pstmt.close();}catch(SQLException e){}
+			}
+			if(conn!=null) {
+				try{conn.close();}catch(SQLException e){}
+			}
+		}
+		
+	}
+
+	public int removeMember(String id) {
+		int res=0;
+		String sql="delete from member where id = ?";
+		
+		try {
+			conn = DriverManager.getConnection(myURL, myID, myPass);
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			res=pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try{rs.close();}catch(SQLException e){}
+			}
+			if(pstmt!=null) {
+				try{pstmt.close();}catch(SQLException e){}
+			}
+			if(conn!=null) {
+				try{conn.close();}catch(SQLException e){}
+			}
+		}
+		return res;
+	}
+}

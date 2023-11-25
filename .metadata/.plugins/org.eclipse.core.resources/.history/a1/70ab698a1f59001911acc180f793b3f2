@@ -1,0 +1,170 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale=1">
+		<link href="${pageContext.request.contextPath }/css/common.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath }/css/main.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath }/css/jquery.bxslider.css" rel="stylesheet"> 
+		
+		<title>글쓰기</title>
+		<style type="text/css">
+		
+		.tab {
+		  float: left;
+		  border: 1px solid #ccc;
+		  background-color: #f1f1f1;
+		  width: 25%;
+		  height: 300px;
+		}
+		
+		.mid_content{
+			width : 74.5%;
+			float : left;
+			margin-left : 5px;
+		}
+		
+		.top_content{
+			padding : 18px; 
+			background-color : skyblue;
+			text-align : center;
+			margin-bottom : 3px;
+		}
+		
+		.tab button {
+		  display: block;
+		  background-color: inherit;
+		  color: black;
+		  padding: 22px 16px;
+		  width: 100%;
+		  border: none;
+		  outline: none;
+		  text-align: left;
+		  cursor: pointer;
+		  font-size: 17px;
+		}
+		
+		.tab button:hover {
+  			background-color: #ddd;
+		}
+		
+		.tab button.active {
+		  background-color: #ccc;
+		}
+		
+		table.type01 {
+		    border-collapse: separate;
+		    border-spacing: 1px;
+		    text-align: center;
+		    line-height: 1.5;
+		    border-top: 1px solid #ccc;
+		    margin: 20px 10px;
+		}
+		    
+		td.style1 {
+		    width: 150px;
+		    padding: 10px;
+		    font-weight: bold;
+		    vertical-align: top;
+		    border-bottom: 1px solid #ccc;
+		    background: #efefef;
+		}
+		    
+		td.style2 {
+		    width: 350px;
+		    vertical-align: top;
+		    border: 1px solid #ccc;
+		}
+		
+		#listbutton{
+			float: right;
+			display: block;
+			background-color: inherit;
+			color: black;
+			padding: 19px 5px;
+			width: 19%;
+			border: none;
+			outline: none;
+			text-align: center;
+			cursor: pointer;
+			font-size: 14px;
+			margin-left : 10px;
+		}
+		
+		</style>
+	</head>
+	<body>
+		<div class="hb">
+			<jsp:include page="../view/mainBody.jsp"></jsp:include>
+		</div>
+		<div class="header">
+			<jsp:include page="../view/mainHeader.jsp"></jsp:include>
+		</div>
+		<div class = "top_content">
+			<h2>보호캠패인</h2>
+		</div>
+		<div class = "tab">
+			<button>병원 목록</button>
+			<button>보호소 목록</button>
+			<button>후원하기</button>
+		</div>
+		<div class = "mid_content">
+		<table style="text-align: center;">
+        	<tr>
+            	<td width = "650">
+                <font size="5em">
+                	병원 정보 수정
+                </font>
+                </td>
+            </tr>
+        </table>
+        
+        <form method="post" action="/saveTheAnimal/protectModifySuccess.hp?num=${ptList.protectnum}">
+		<table class="type01">
+        	<tr>
+            	<td class="style1">병원명</td>
+                <td class="style2"><input type="text" name="name" style="width:170px; height:36px; border:none" value="${ptList.name}"/></td>
+				<td class="style1">해당지역</td>
+				<td class="style2"><input type="text" name="area" style="width:170px; height:36px; border:none" value="${ptList.area}"/></td>
+             </tr>
+			 <tr>
+				 <td class="style1">주소</td>
+				 <td colspan="4" class="style2"><input type="text" name="adress" size="55" style="width:510px; height:36px; border:none" value="${ptList.adress}"/></td>
+			</tr>
+            <tr>
+            	<td class="style1">전화번호</td>
+                <td class="style2"><input type="text" name="tel" style="width:170px; height:36px; border:none" value="${ptList.tel}"/></td>
+				<td class="style1">영업시간</td>
+				<td class="style2"><input type="text" name="open" style="width:170px; height:36px; border:none" value="${ptList.open}"/></td>
+            </tr>
+			<tr>
+            	<td class="style1">병원소개</td>
+                <td colspan="3" class="style2">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <textarea rows="10" cols="65" name="content" style="width:520px; height:150px; border:none">${ptList.content}</textarea>
+                </td>
+			</tr>
+			<tr>
+				<td colspan="4" class="style1">구글맵 좌표</td> 
+			</tr>
+             <tr>
+            	<td class="style1">Maplat</td>
+                <td class="style2"><input type="text" name="maplat" style="width:170px; height:36px; border:none" value="${ptList.maplat }"/></td>
+				<td class="style1">Maplng</td>
+				<td class="style2"><input type="text" name="maplng" style="width:170px; height:36px; border:none" value="${ptList.maplng }"></td>
+            </tr>
+		</table>
+        <div>             
+               	<button type="button" id="listbutton" onclick="location.href = '/saveTheAnimal/protectList.hp?page=1'">취소</button>
+               	<button type="submit" id="listbutton" onclick="alert('수정이 완료되었습니다.')">수정하기</button>
+        </div>   
+        </form>
+		</div>
+		
+		<div class="w1200">
+			<jsp:include page="../view/mainFooter.jsp"></jsp:include>
+		</div>
+	</body>
+</html>

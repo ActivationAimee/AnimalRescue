@@ -1,0 +1,72 @@
+﻿<%@page import="vo.Member"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	Member member = (Member)session.getAttribute("member"); 	
+%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Save the animal</title>
+		<link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/css/jquery.bxslider.css" rel="stylesheet">
+		<script src="${pageContext.request.contextPath}/js/jquery-3.3.1.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/jquery.bxslider.js"></script>
+		<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	</head>
+	<body>
+		<div class="hb">
+			<jsp:include page="/main/mainBody.jsp"></jsp:include>
+		</div>
+		<div class="header">
+			<jsp:include page="/main/mainHeader.jsp"></jsp:include>
+		</div>	
+		<div class="contents">
+		<div class="regbox">
+		<form name="member" method="post" action="/saveTheAnimal/modifyId.anires">
+			<h2> 회원 수정</h2>
+			<table summary="이름, 아이디, 패스워드, 전화번호, 이메일 입력이 있습니다." class="member_table">
+				<caption class="readonly"> 회원수정 표</caption> <!-- 표 제목 -->
+				<colgroup>
+					<col width="20%">
+					<col width="*">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>아이디</th>
+						<td><input type="text" name="id" value="${member.id}" class="w80" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<th>비밀번호</th>
+						<td><input type="text" name="pwd" value="${member.pass }" class="w80"></td>
+					</tr>
+					<tr>
+						<th>이 름</th>
+						<td><input type="text" name="name" value="${member.name }" ></td>
+					</tr>
+					<tr>
+						<th>전화번호</th>
+						<td><input type="text" name="phone" value="${member.phone }" class="w80"></td>
+					</tr>
+					<tr>
+						<th>나이</th>
+						<td><input type="number" name="age" value="${member.age }" class="w80"></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="txtc">
+						<input type="submit" value="수정하기" class="btn_ok"/>&nbsp;&nbsp;
+						<input type="reset" value="다시쓰기"  class="btn_reset"/>
+						<input type="button" value="메인으로"  class="btn_reset" onclick="location.href='main/mainForm.jsp'"/>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		</div>
+		</div>
+		<div class="w1200">
+			<jsp:include page="/main/mainFooter.jsp"></jsp:include>
+		</div>	
+	</body>
+</html>

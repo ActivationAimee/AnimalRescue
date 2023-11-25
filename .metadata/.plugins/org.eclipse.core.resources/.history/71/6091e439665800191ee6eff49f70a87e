@@ -1,0 +1,13 @@
+import java.util.Calendar;
+
+public class test {
+
+	public static void main(String[] args) {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH)+1;
+		int day = c.get(Calendar.DATE);
+		System.out.println(year+"-"+month+"-"+day);
+	}
+
+}

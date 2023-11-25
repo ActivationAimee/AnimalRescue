@@ -1,0 +1,32 @@
+package action;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.AnimalDAO;
+
+public class Animal_adoptDelete implements Action {
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ActionForward af = null;
+		AnimalDAO dao = new AnimalDAO();
+		boolean b = false;
+		String pass = request.getParameter("pass");
+		if(admin!=null) {
+			b =true;
+		}else {
+			b = dao.aa_truefalse(pass);
+		}
+		int ani_no = Integer.parseInt(request.getParameter("ani_no"));
+		if (b) {
+			dao.animal_adoptDelete(ani_no);
+			af = new ActionForward("adopt/adopt_success.jsp", false);
+		} else {
+			request.setAttribute("error", "パスワードが間違いました。");
+			request.setAttribute("ani_no", request.getParameter("ani_no"));
+			af = new ActionForward("/adopt/adopt_deleteForm.jsp", false);
+		}
+		return af;
+	}
+}

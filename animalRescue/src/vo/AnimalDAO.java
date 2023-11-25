@@ -1,0 +1,294 @@
+package vo;
+
+import static utils.JdbcUtils.close;
+import static utils.JdbcUtils.getConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AnimalDAO {
+
+	/**
+	 * 占쎌뿯占쎈펶疫뀐옙 疫뀐옙甕곕뜇�깈
+	 * @return
+	 */
+	public int Animal_adoptNumber() {
+		int a = 0;
+		String sql = "select max(ani_no) from animal_adopt";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				a = rs.getInt(1);
+				a++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return a;
+	}
+
+	/**
+	 * 占쎌뿯占쎈펶占쎈뻿筌ｏ옙
+	 */
+	public int animal_adoptInsert(Animal_adopt na) {
+		int a = 0;
+		String sql = "insert into animal_adopt values(?,?,?,?,?,?,?,sysdate,?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, na.getAni_no()); // �뼨�먯삕�뵓怨뺣쐡占쎄퉰(�뜝�럩�겱�뜝�럥吏쀥뜝�럡臾멨뜝�럡�뎽�뜝�럩紐드슖�댙�삕 �뜝�럡�맂�뼨轅명�쀧뵳占�)
+			pstmt.setInt(2, na.getAni_w()); // �뜝�럩肉��뜝�럥�렧�뜝�럩諭� �뜝�럩�쐸�뜝�럥由��뜝�럥裕� �뜝�럥吏쀯옙�닱�뜝占�
+			pstmt.setString(3, na.getAni_subject()); // �뜝�럩�젷嶺뚮쪋�삕
+			pstmt.setString(4, na.getAni_content()); // �뜝�럡���뜝�럩�뮔
+			pstmt.setString(5, na.getAni_name()); // �뜝�럥六욜춯節륁삕�뜝�럩�겱 �뜝�럩逾좑옙逾녑뜝占�
+			pstmt.setString(6, na.getAni_tel()); // �뜝�럥六욜춯節륁삕�뜝�럩�겱 �뜝�럥�뿼�뜝�럩逾�嶺뚳퐦�삕
+			pstmt.setString(7, na.getAni_date()); // �뜝�럩肉��뜝�럥�렧 �뜝�럩逾뺟춯�씮鍮섓옙逾�
+			pstmt.setString(8, na.getAni_pass()); // �뼨�먯삕 占쎈쑏熬곣뫅�삕�뵓怨뺣쐡占쎄퉰
+
+			a = pstmt.executeUpdate(); // �뜝�럩�젧�뜝�럡留� �뜝�럥苡삣슖�돦鍮섓옙六� 0 �뜝�럩逾졾뜝�럩�뇶�뜝�럩踰� �뜝�럥�뼪�뜝�럩�겱
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, null);
+		}
+		return a;
+	}
+	
+	/**
+	 * 占쎌뿯占쎈펶占쎈뻿筌ｏ옙疫뀐옙 占쎈땾占쎌젟占쎌뱽 占쎌맄占쎈립 疫뀐옙甕곕뜇�깈占쏙옙 �뜮袁⑨옙甕곕뜇�깈 �뜮袁㏉꺍
+	 */
+	public boolean Updateboolean(int ani_no, String ani_pass) {
+		boolean b = false;
+		String sql = "select * from animal_adopt where ani_no=? and ani_pass";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			b = rs.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	/**
+	 * 占쎌뿯占쎈펶占쎈뻿筌ｏ옙 占쎈땾占쎌젟
+	 */
+	public int animal_adoptUpdate(Animal_adopt na) {
+		int a = 0;
+		String sql = "update animal_adopt set ani_subject=?, ani_content=?, ani_tel=?, ani_date=?, ani_pass=? where ani_no=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, na.getAni_subject()); // �뜝�럩�젷嶺뚮쪋�삕
+			pstmt.setString(2, na.getAni_content()); // �뜝�럡���뜝�럩�뮔
+			pstmt.setString(3, na.getAni_tel()); // �뜝�럥六욜춯節륁삕�뜝�럩�겱 �뜝�럥�뿼�뜝�럩逾�嶺뚳퐦�삕
+			pstmt.setString(4, na.getAni_date()); // �뜝�럩肉��뜝�럥�렧 �뜝�럩逾뺟춯�씮鍮섓옙逾�
+			pstmt.setString(5, na.getAni_pass()); // �뼨�먯삕 占쎈쑏熬곣뫅�삕�뵓怨뺣쐡占쎄퉰
+			pstmt.setInt(6, na.getAni_no()); // �뼨�먯삕�뵓怨뺣쐡占쎄퉰
+			a = pstmt.executeUpdate(); // �뜝�럩�젧�뜝�럡留� �뜝�럥苡삣슖�돦鍮섓옙六� 0 �뜝�럩逾졾뜝�럩�뇶�뜝�럩踰� �뜝�럥�뼪�뜝�럩�겱
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, null);
+		}
+		return a;
+	}
+	/**
+	 * 삭제전 비번 확인
+	 */
+	public boolean aa_truefalse(String pass) {
+		boolean b = false;
+		String sql = "select ani_pass from animal_adopt where ani_pass=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pass);
+			rs = pstmt.executeQuery();
+			b = rs.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, null);  
+		}
+		return b;
+	}
+	/**
+	 * 占쎌뿯占쎈펶疫뀐옙 占쎄텣占쎌젫
+	 */
+	public void animal_adoptDelete(int no) {
+		String sql = "delete from animal_adopt where ani_no=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, null);
+		}
+	}
+	/**
+	 * 占쎌뿯占쎈펶 占쎄맒占쎄쉭癰귣떯由�
+	 */
+	public Animal_adopt adoptSelect(int no) {
+		Animal_adopt aa=null;
+		String sql="select ani_no, ani_w, ani_subject, ani_content, ani_name, ani_tel, to_char(ani_date,'yyyy-mm-dd'),ani_dday,ani_pass from animal_adopt where ani_no=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				aa = new Animal_adopt(no,
+						rs.getInt("ani_w"), 
+						rs.getString("ani_subject"), 
+						rs.getString("ani_content"), 
+						rs.getString("ani_name"), 
+						rs.getString("ani_tel"), 
+						rs.getString("to_char(ani_date,'yyyy-mm-dd')"), 
+						rs.getString("ani_dday"), 
+						rs.getString("ani_pass"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return aa;
+	}
+	/**
+	 * 占쎌뿯占쎈펶占쎈뻿筌ｏ옙 �뵳�딅뮞占쎈뱜
+	 */
+	public List<Animal_adopt> animal_adoptList() {
+		List<Animal_adopt> list = new ArrayList<Animal_adopt>();
+		String sql = "select * from animal_adopt";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(new Animal_adopt(rs.getInt("ani_no"), rs.getInt("ani_w"), rs.getString("ani_subject"),
+						rs.getString("ani_content"), rs.getString("ani_name"), rs.getString("ani_tel"),
+						rs.getString("ani_date"), rs.getString("ani_dday"), rs.getString("ani_pass")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return list;
+	}
+	
+
+	public ArrayList<Animal_adopt> selectanimal_adoptList(int start, int last){
+		ArrayList<Animal_adopt> list = new ArrayList<Animal_adopt>();
+		Animal_adopt aa = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select * from(select rownum rnum, data.* from(select * from animal_adopt order by ani_no desc)data) where rnum >= ? and rnum <= ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, last);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(new Animal_adopt(rs.getInt("ani_no"), rs.getInt("ani_w"), rs.getString("ani_subject"),
+						rs.getString("ani_content"), rs.getString("ani_name"), rs.getString("ani_tel"),
+						rs.getString("ani_date"), rs.getString("ani_dday"), rs.getString("ani_pass")));
+				list.add(aa);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn, pstmt, rs);
+		}
+		return list;
+	}
+	
+	/**
+	 * select�� modify �씠誘몄�
+	 */
+	public AnimalSearch animal_adoptImg(int ani_num) {
+		AnimalSearch as = new AnimalSearch();
+		String img=null;
+		String kind = null;
+		String sql ="select ani_image, ani_kind from animal_search where ani_no=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn=getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, ani_num);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				img = rs.getString("ani_image");
+				kind = rs.getString("ani_kind");
+				as.setAni_image(img);
+				as.setAni_kind(kind);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn,pstmt,rs);
+		}
+		
+		return as;
+	}
+	
+	public int serchContent() {
+		int content = 0;
+		String sql = "select * from(select rownum rnum from(select * from animal_adopt))";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				content = rs.getInt("rnum");
+			}
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn, pstmt, rs);
+		}
+		
+		return content;
+	}
+}

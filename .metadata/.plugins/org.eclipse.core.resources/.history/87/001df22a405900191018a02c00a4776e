@@ -1,0 +1,169 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale=1">
+		<link href="${pageContext.request.contextPath }/css/common.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath }/css/main.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath }/css/jquery.bxslider.css" rel="stylesheet"> 
+		
+		<title>病院登録</title>
+		<style type="text/css">
+		
+		.tab {
+		  float: left;
+		  border: 1px solid #ccc;
+		  background-color: #f1f1f1;
+		  width: 25%;
+		  height: 300px;
+		}
+		
+		.mid_content{
+			width : 74.5%;
+			float : left;
+			margin-left : 5px;
+		}
+		
+		.top_content{
+			padding : 18px; 
+			background-color : skyblue;
+			text-align : center;
+			margin-bottom : 3px;
+		}
+		
+		.tab button {
+		  display: block;
+		  background-color: inherit;
+		  color: black;
+		  padding: 22px 16px;
+		  width: 100%;
+		  border: none;
+		  outline: none;
+		  text-align: left;
+		  cursor: pointer;
+		  font-size: 17px;
+		}
+		
+		.tab button:hover {
+  			background-color: #ddd;
+		}
+		
+		.tab button.active {
+		  background-color: #ccc;
+		}
+		
+		table.type01 {
+		    border-collapse: separate;
+		    border-spacing: 1px;
+		    text-align: center;
+		    line-height: 1.5;
+		    border-top: 1px solid #ccc;
+		    margin: 20px 10px;
+		}
+		    
+		td.style1 {
+		    width: 150px;
+		    padding: 10px;
+		    font-weight: bold;
+		    vertical-align: top;
+		    border-bottom: 1px solid #ccc;
+		    background: #efefef;
+		}
+		    
+		td.style2 {
+		    width: 350px;
+		    vertical-align: top;
+		    border: 1px solid #ccc;
+		}
+		
+		#listbutton{
+			float: right;
+			display: block;
+			background-color: inherit;
+			color: black;
+			padding: 19px 5px;
+			width: 19%;
+			border: none;
+			outline: none;
+			text-align: center;
+			cursor: pointer;
+			font-size: 14px;
+			margin-left : 10px;
+		}
+		
+		</style>
+	</head>
+	<body>
+		<div class="hb">
+			<jsp:include page="/main/mainBody.jsp"></jsp:include>
+		</div>
+		<div class="header">
+			<jsp:include page="/main/mainHeader.jsp"></jsp:include>
+		</div>
+		<div class = "top_content">
+			<h2>保護キャンペーン</h2>
+		</div>
+		<div class = "tab">
+			<button onclick = "location.href='/animalRescue/list.anires?page=1'">病院リスト</button>
+			<button onclick = "location.href='/animalRescue/protectList.anires?page=1'">保護センターリスト</button>
+		</div>
+		<div class = "mid_content">
+		<table style="text-align: center;">
+        	<tr>
+            	<td width = "650">
+                <font size="5em">
+                	病院情報作成
+                </font>
+                </td>
+            </tr>
+        </table>
+        
+        <form method="post" action="/saveTheAnimal/write.anires?page=1">
+		<table class="type01">
+        	<tr>
+            	<td class="style1">病院名</td>
+                <td class="style2"><input type="text" name="name" style="width:170px; height:36px; border:none"></input></td>
+				<td class="style1">地域</td>
+				<td class="style2"><input type="text" name="area" style="width:170px; height:36px; border:none"></input></td>
+             </tr>
+			 <tr>
+				 <td class="style1">住所</td>
+				 <td colspan="4" class="style2"><input type="text" name="adress" size="55" style="width:510px; height:36px; border:none"></input></td>
+			</tr>
+            <tr>
+            	<td class="style1">電話番号</td>
+                <td class="style2"><input type="text" name="tel" style="width:170px; height:36px; border:none"></input></td>
+				<td class="style1">営業時間</td>
+				<td class="style2"><input type="text" name="open" style="width:170px; height:36px; border:none"></input></td>
+            </tr>
+			<tr>
+            	<td class="style1">病院紹介</td>
+                <td colspan="3" class="style2">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <textarea rows="10" cols="65" name="content" style="width:520px; height:150px; border:none"></textarea>
+                </td>
+			</tr>
+			<tr>
+				<td colspan="4" class="style1">マップ座標</td> 
+			</tr>
+             <tr>
+            	<td class="style1">Maplat</td>
+                <td class="style2"><input type="text" name="maplat" style="width:170px; height:36px; border:none"></input></td>
+				<td class="style1">Maplng</td>
+				<td class="style2"><input type="text" name="maplng" style="width:170px; height:36px; border:none"></input></td>
+            </tr>
+		</table>
+        <div>             
+               	<button type="button" id="listbutton" onclick="location.href = '/saveTheAnimal/list.anires?page=1'">戻る</button>
+               	<button type="submit" id="listbutton" onclick="alert('정보가 등록되었습니다.')">登録</button>
+        </div>    
+        </form>
+		</div>
+		
+		<div class="w1200">
+			<jsp:include page="/main/mainFooter.jsp"></jsp:include>
+		</div>
+	</body>
+</html>

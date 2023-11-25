@@ -1,0 +1,169 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<title>상세내용 보기</title>
+		<style type="text/css">
+			#LeftMenuArea{float:left; padding-top:34px; padding-left:20px; padding-right:30px; height:100%; padding-bottom:50px;}
+			.LeftMenu{float:left; width:200px;}
+			.LeftMenu li{line-height:20px; font-size:0px;}
+			img {height : 300px; width : 300px;}
+			.contable{width : 600px;}
+			td{background-color : blue; width : 90px;}
+			.tab {
+		 		float: left;
+		 		border: 1px solid #ccc;
+		  		background-color: #f1f1f1;
+		  		width: 25%;
+		  		height: 300px;
+			}
+			.tab button {
+		 		display: block;
+		  		background-color: inherit;
+		  		color: black;
+		 		padding: 22px 16px;
+		 		width: 100%;
+		 		border: none;
+		 		outline: none;
+		  		text-align: left;
+		  		cursor: pointer;
+		  		font-size: 17px;
+			}
+		
+			.tab button:hover {
+  				background-color: #ddd;
+			}
+		
+			.tab button.active {
+		 		background-color: #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<jsp:include page="/main/mainHeader.jsp"/>
+			<div class = "tab">
+				<button onclick="location.href='/animalRescue/aSearchList.anires'">실종동물 공고</button>
+				<button onclick = "location.href='/animalRescue/hSearchList.anires'">보호중인 유기동물</button>
+				<button onclick = "location.href='/animalRescue/cSearchList.anires'">수색완료</button>
+			</div>
+		<form>
+			<div id="ContentArea">
+				<table class = "contable">
+					<tr>
+						<td>제목</td>
+						<th colspan = "3">${aniView.ani_subject }</th>
+					</tr>
+					<tr>
+						<td>종류</td>
+						<th>
+							<c:if test="${aniView.ani_kind =='kind_dog'}">
+								개
+							</c:if>
+							<c:if test="${aniView.ani_kind =='kind_cat'}">
+								고양이
+							</c:if>
+							<c:if test="${aniView.ani_kind =='kind_bird'}">
+								조류
+							</c:if>
+							<c:if test="${aniView.ani_kind =='kind_repamp'}">
+								파충류/양서류
+							</c:if>
+							<c:if test="${aniView.ani_kind =='kind_small'}">
+								기타소동물
+							</c:if>
+						</th>
+						<td>등록일</td>
+						<th>${aniView.ani_date }</th>
+					</tr>
+					<tr>
+						<td>지역</td>
+						<th colspan = "3">
+							<c:if test="${aniView.ani_area =='area_seoul'}">
+								서울
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_busan'}">
+								부산
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_daegu'}">
+								대구
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_incheon'}">
+								인천
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_gwangju'}">
+								광주
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_daejeon'}">
+								대전
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_ulsan'}">
+								울산
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_sejong'}">
+								세종
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_kyungki'}">
+								경기
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_gangwon'}">
+								강원
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_chungbuk'}">
+								충북
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_chungnam'}">
+								충남
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_jeonbuk'}">
+								전북
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_jeonnam'}">
+								전남
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_kyeongbuk'}">
+								경북
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_kyeongnam'}">
+								경남
+							</c:if>
+							<c:if test="${aniView.ani_area =='area_jeju'}">
+								제주
+							</c:if>
+						</th>
+					</tr>
+					<tr>
+						<td>작성자</td>
+						<th>${aniView.ani_name }</th>
+						<td>연락처</td>
+						<th>${aniView.ani_tel }</th>
+					</tr>
+					<tr>
+						<th colspan = "2">
+							<img src = "/animalRescue/img/${aniView.ani_image }"/>
+						</th>
+						<th colspan = "2">
+							${aniView.ani_content }
+						</th>
+					</tr>
+					<tr>
+						<th colspan = "4">
+							<!-- 자바스크립트 작성, 로그인세션과 글작성회원정보가 같으면 페이지 이동 회원정보가 다르면 글 작성자만 수정이/삭제가 가능합니다 경고창,
+							아니면 로그인을 하라는 경고창,  -->
+							<c:if test = "${aniView.ani_now==0 }">
+							<input type = "button" value="수정" onclick = "location.href='/animalRescue/searchModify.anires?ani_no=${aniView.ani_no }'"/>
+							<input type = "button" value="입양신청" onclick = "javascript:void(window.open('adopt_writeForm.anires?ani_w=${aniView.ani_no }'))"/>
+							</c:if>
+							<input type = "button" value ="삭제" onclick = "location.href='/animalRescue/searchDelete.anires?ani_no=${aniView.ani_no }'"/>
+							<input type="button" value = "목록으로" onclick = "history.back()"/>
+						</th>
+					</tr>
+				</table>
+			</div>
+		</form>
+		<jsp:include page="../main/mainFooter.jsp"/>
+	</body>
+</html>

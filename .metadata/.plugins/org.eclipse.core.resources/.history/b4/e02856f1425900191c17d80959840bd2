@@ -1,0 +1,33 @@
+<%@page import="vo.Member"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+<%
+	Member member = (Member)session.getAttribute("member"); 	
+%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+			<div class="hb">
+			<div class="w1200">
+				<div class="h80">
+					<ul class="side">
+						<c:choose>
+							<c:when test="${member == null }">
+						<li><a href="/saveTheAnimal/member_login/mem_loginForm.jsp">로그인</a></li>
+							</c:when>
+							<c:otherwise>
+						<li><a href="/saveTheAnimal/logOutId.hp">로그아웃</a></li>
+						<li><a href="/saveTheAnimal/member_login/mypage.jsp">마이페이지</a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

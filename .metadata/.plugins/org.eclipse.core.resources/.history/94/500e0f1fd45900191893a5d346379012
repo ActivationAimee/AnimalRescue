@@ -1,0 +1,203 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<title>迷子動物広告</title>
+		<style type="text/css">
+			img {width : auto; height:120px; margin : auto 0;}
+			.tab {
+		 		float: left;
+		 		border: 1px solid #ccc;
+		  		background-color: #f1f1f1;
+		  		width: 25%;
+		  		height: 700px;
+		  		position:relative;
+			}
+		
+			.mid_content{
+				width : 74.5%;
+				float : left;
+				margin-left : 5px;
+			}
+		
+			.top_content{
+				padding : 18px; 
+				background-color : skyblue;
+				text-align : center;
+				margin-bottom : 3px;
+			}
+		
+			.tab button {
+		 		display: block;
+		  		background-color: inherit;
+		  		color: black;
+		 		padding: 22px 16px;
+		 		width: 100%;
+		 		border: none;
+		 		outline: none;
+		  		text-align: left;
+		  		cursor: pointer;
+		  		font-size: 17px;
+			}
+		
+			.tab button:hover {
+  				background-color: #ddd;
+			}
+		
+			.tab button.active {
+		 		background-color: #ccc;
+			}
+			#listbutton{
+			float: left;
+			display: block;
+			background-color: inherit;
+			color: black;
+			padding: 10px 5px;
+			width: 13%;
+			border: none;
+			outline: none;
+			text-align: center;
+			cursor: pointer;
+			font-size: 10px;
+			margin-left : 10px;
+			}
+			#writebutton{
+				float: right;
+				display: block;
+				background-color: inherit;
+				color: black;
+				padding: 10px 5px;
+				width: 13%;
+				border: none;
+				outline: none;
+				text-align: center;
+				cursor: pointer;
+				font-size: 10px;
+				margin-left : 10px;
+			}
+		</style>
+		<script type = "text/javascript" src = "/js/jquery.exif.js"/>
+	</head>
+	<body>
+			<div class="hb">
+				<jsp:include page="/main/mainBody.jsp"/>
+			</div>
+			<div class="header">
+				<jsp:include page="/main/mainHeader.jsp"/>
+			</div>
+			<div class = "top_content">
+				<h2>迷子動物広告</h2>
+			</div>
+			<div class = "tab">
+				<button onclick="location.href='/animalRescue/aSearchList.anires'">迷子動物</button>
+				<button onclick = "location.href='/animalRescue/hSearchList.anires'">保護中の動物</button>
+				<button onclick = "location.href='/animalRescue/cSearchList.anires'">捜索済み</button>
+			</div>
+		<form name = "animalS" method = "post" action="/animalRescue/searchSearch.anires">
+			<input type = "hidden" name = "attribute" value = "${attri }"/>
+			<div id="ContentArea" >
+				<c:choose>
+					<c:when test = "${now==1 }">
+						<h1>捜索済み</h1>
+					</c:when>
+					<c:when test = "${now==0 }">
+						<c:choose>
+							<c:when test = "${attri==0 }">
+								<h1>迷子動物</h1>
+							</c:when>
+							<c:otherwise>
+								<h1>保護中の動物</h1>
+							</c:otherwise>
+						</c:choose>
+					</c:when>
+					<c:otherwise>
+						<h1>広告</h1>※灰色の項目は帰宅済みです。
+					</c:otherwise>
+				</c:choose>
+					
+					<c:if test = "${attri !=null }">
+					<div class="searchListcon" style = "border:2px solid green; border-radius:10px;">
+						<span style="color:#8c0000;">日付の形式は次の例のようにしてください。 例)2018-01-01</span><br>
+						<span class="searchDate"><label for="s_date">日付 </label></span>
+						<span><input type="text" title="期間(～から)" name="s_date" onblur="chkDate(this.value, this.id);" class="tcal" size="12" maxlength="10" value=""/></span>
+						<span>~</span>
+						<span><input type="text" title="期間(～まで)" name="e_date" onblur="chkDate(this.value, this.id);" class="tcal" size="12" maxlength="10" value=""/></span>
+						<br><br>
+						<label for = "area">地域</label>
+							<select name = "area">
+								<option value = "">地域を選んでください</option>
+								<option value = "area_seoul">ソウル特別市</option>
+								<option value = "area_busan">釜山広域市</option>
+								<option value = "area_daegu">大邱広域市</option>
+								<option value = "area_incheon">仁川広域市</option>
+								<option value = "area_gwangju">広州広域市</option>
+								<option value = "area_daejeon">大田広域市</option>
+								<option value = "area_ulsan">蔚山広域市</option>
+								<option value = "area_sejong">世宗特別市</option>
+								<option value = "area_kyungki">京畿道</option>
+								<option value = "area_gangwon">江原道 </option>
+								<option value = "area_chungbuk">忠清北道</option>
+								<option value = "area_chungnam">忠清南道</option>
+								<option value = "area_jeonbuk">全羅北道</option>
+								<option value = "area_jeonnam">全羅南道</option>
+								<option value = "area_kyeongbuk">慶尚北道</option>
+								<option value = "area_kyeongnam">慶尚南道</option>
+								<option value = "area_jeju">済州特別自治道</option>
+							</select><br><br>
+							<label for = "area">種類</label>
+							<select name = "kind">
+								<option value = "">類を選んでください</option>
+								<option value = "kind_dog">犬</option>
+								<option value = "kind_cat">猫</option>
+								<option value = "kind_bird">鳥類</option>
+								<option value = "kind_repamp">爬虫類・両生類</option>
+								<option value = "kind_small">その他</option>
+							</select><br><br>
+						<input type="submit" value = "検索" id = "listbutton"/><br><br>
+					</div>
+					</c:if>
+					<div class = "mainContent">
+						<c:if test = "${SearchList ne null }">
+							<table text-align = "center" >
+								<tr>
+									<c:forEach var = "animalSearch" items = "${SearchList }" varStatus = "status">
+									<c:choose>
+										<c:when test="${animalSearch.ani_now==1}">
+											<td style = "width : 230px; margin-right:5px; text-align:center; background-color: #BDBDBD">
+										</c:when>
+										<c:otherwise>
+											<td style = "width : 230px; margin-right:5px; text-align:center;">
+										</c:otherwise>
+									</c:choose>
+										<a href = "searchView.anires?ani_no=${animalSearch.ani_no }">
+										<img src = "img/${animalSearch.ani_image }" id = "sAnimalImage"/><br>
+										${animalSearch.ani_subject }
+										</a> <br>
+										日付 : ${animalSearch.ani_date }
+									</td>
+										<c:if test = "${((status.index+1) mod 4) == 0 }">
+								</tr>
+								<tr>
+										</c:if>
+									</c:forEach>
+								</tr>
+							</table>
+						</c:if>
+						<c:if test = "${SearchList == null }">
+							<div class = "div_empty">
+								項目がありません。
+							</div>
+						</c:if>	
+					</div>
+				</div>
+		</form>
+		<p align="right">
+			<button id = "writebutton" onclick = "location.href='/animalRescue/search/searchWrite.jsp'">作成</button>
+		</p>
+		<jsp:include page="/main/mainFooter.jsp"/>
+	</body>
+</html>

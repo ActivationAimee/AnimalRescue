@@ -1,0 +1,48 @@
+package action;
+
+import java.sql.Date;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+import vo.ActionForward;
+import vo.AnimalSearch;
+import vo.AnimalSearchDAO;
+
+public class SearchWriteAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ServletContext ctx=request.getServletContext();
+		String saveFolder="/im";
+		String realPath=ctx.getRealPath(saveFolder);
+		int size=5 * 1024 * 1024;//5MB -한번에 업로드하는 파일크기
+		String encType="UTF-8";
+		
+		MultipartRequest multi=new MultipartRequest(request, realPath, size, encType, new DefaultFileRenamePolicy());
+		
+		
+		AnimalSearchDAO dao = new AnimalSearchDAO();
+		String subject = request.getParameter("ani_subject");
+		String content =request.getParameter("ani_content");
+		String area = request.getParameter("ani_area");
+		Date date = Date.valueOf(request.getParameter("ani_date"));
+		String kind = request.getParameter("ani_kind");
+		String image = request.getParameter("ani_image");
+		String name = request.getParameter("ani_name");
+		String tel = request.getParameter("ani_tel");
+		int attribute = Integer.parseInt("ani_attribute");
+		int now = Integer.parseInt("ani_now");
+		AnimalSearch as = new AnimalSearch(0,subject,content,area,date,kind,image,name,tel,attribute,now);
+		dao.insertSearch(as);
+		
+		
+		ActionForward af = new ActionForward("/search/animalSearch.jsp",false);
+		return af;
+	}
+
+}

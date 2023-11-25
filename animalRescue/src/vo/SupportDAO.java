@@ -1,0 +1,174 @@
+package vo;
+
+import static utils.JdbcUtils.close;
+import static utils.JdbcUtils.getConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+public class SupportDAO {
+	public int SupportNumber() {
+		int a = 0;
+		String sql = "select max(snum) from support";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				a = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return a;
+	}
+	
+	public void SupportUpdate(Support sp) {
+		String sql = "update support set id=?, name=?, image=?, phone=?, account=?, money=?, subject=?, content=? where ani_no=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sp.getId());
+			pstmt.setString(2, sp.getName());
+			pstmt.setString(3, sp.getImage());
+			pstmt.setString(4, sp.getPhone());
+			pstmt.setString(5, sp.getAccount());
+			pstmt.setInt(6, sp.getMoney());
+			pstmt.setString(7, sp.getSubject());
+			pstmt.setString(8, sp.getContent());
+			pstmt.setInt(9, sp.getSnum());
+			pstmt.executeUpdate(); // �뜝�럩�젧�뜝�럡留� �뜝�럥苡삣슖�돦鍮섓옙六� 0 �뜝�럩逾졾뜝�럩�뇶�뜝�럩踰� �뜝�럥�뼪�뜝�럩�겱
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, null);
+		}
+	}
+	
+	public int SupportInsert(Support sp) {
+		int a = 0;
+		int max = 0;
+		max = SupportNumber();
+		String sql = "insert into support values(?,?,?,?,?,?,?,?,?,sysdate)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, max+1);
+			pstmt.setString(2, sp.getId());
+			pstmt.setString(3, sp.getName());
+			pstmt.setString(4, sp.getImage());
+			pstmt.setString(5, sp.getPhone());
+			pstmt.setString(6, sp.getAccount());
+			pstmt.setInt(7, sp.getMoney());
+			pstmt.setString(8, sp.getSubject());
+			pstmt.setString(9, sp.getContent());
+			a = pstmt.executeUpdate(); // �뜝�럩�젧�뜝�럡留� �뜝�럥苡삣슖�돦鍮섓옙六� 0 �뜝�럩逾졾뜝�럩�뇶�뜝�럩踰� �뜝�럥�뼪�뜝�럩�겱
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, null);
+		}
+		return a;
+	}
+
+	public void SupportDelete(int snum) {
+		String sql = "delete from support where snum=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, snum);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, null);
+		}
+	}
+
+	public Support SupportSelect(int snum) {
+		Support sp = null;
+		String sql = "select * from support where snum=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, snum);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				sp = new Support(snum, rs.getString("id"), rs.getString("name"), rs.getString("image"),
+						rs.getString("phone"), rs.getString("account"), rs.getInt("money"), rs.getString("subject"),
+						rs.getString("content"), rs.getString("dday").substring(0, 10));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return sp;
+	}
+
+	public ArrayList<Support> selectSupportList(int start, int last) {
+		ArrayList<Support> list = new ArrayList<Support>();
+		Support sp = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "select * from(select rownum rnum, data.* from(select * from support order by snum desc)data) where rnum >= ? and rnum <= ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, last);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				list.add(new Support(rs.getInt("snum"), rs.getString("id"), rs.getString("name"), rs.getString("image"),
+						rs.getString("phone"), rs.getString("account"), rs.getInt("money"), rs.getString("subject"),
+						rs.getString("content"), rs.getString("dday").substring(0, 10)));
+				list.add(sp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return list;
+	}
+
+	public int serchContent() {
+		int content = 0;
+		String sql = "select * from(select rownum rnum from(select * from support))";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				content = rs.getInt("rnum");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+
+		return content;
+	}
+}

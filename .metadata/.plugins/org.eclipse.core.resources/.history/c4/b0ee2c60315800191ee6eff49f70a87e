@@ -1,0 +1,47 @@
+package action;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vo.ActionForward;
+import vo.AnimalSearch;
+import vo.AnimalSearchDAO;
+
+public class SearchSearchAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		AnimalSearchDAO dao = new AnimalSearchDAO();
+		List<AnimalSearch> list = new ArrayList<AnimalSearch>();
+		Date sdate = java.sql.Date.valueOf(request.getParameter("sdate"));
+		Date edate = java.sql.Date.valueOf(request.getParameter("edate"));
+		String area = request.getParameter("area");
+		String kind = request.getParameter("kind");
+		
+		if(sdate==null||edate==null) {
+			list = dao.selectAreaKind(area, kind);
+		}else if(sdate==null||edate==null||area==null) {
+			list = dao.selectKind(kind);
+		}else if(sdate==null||edate==null||kind==null) {
+			list = dao.selectArea(area);
+		}else if(area==null) {
+			list = dao.selectPeriKind(sdate, edate, kind);
+		}else if(area==null||kind==null) {
+			list = dao.selectPeriod(sdate, edate);
+		}else if(kind==null) {
+			list = dao.selectPeriArea(sdate, edate, area);
+		}else {
+			list = dao.selectAll(sdate, edate, area, kind);
+		}
+		
+		request.setAttribute("SearchList", list);
+		ActionForward af = new ActionForward("search/animalSearch.jsp", false);
+		return af;
+	}
+
+}
